@@ -27,6 +27,15 @@
 .proposal-heading > span { padding: 4px 7px; border-radius: 999px; background: #eee; font-size: 9px; font-weight: 800; }
 .proposal-text { padding: 14px; font-family: Georgia, 'Times New Roman', serif; font-size: 13px; line-height: 1.65; }
 .proposal-actions { margin: 0; padding: 9px; border-top: 1px solid #ececec; background: #fafafa; }
+.message-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 9px; border-top: 1px solid #ececec; }
+.message-action-group,.message-feedback { display: flex; align-items: center; gap: 3px; }
+.message-feedback { padding-left: 7px; border-left: 1px solid #e6e6e6; }
+.message-actions button { position: relative; width: 29px; height: 29px; display: grid; place-items: center; border: 0; border-radius: 6px; background: transparent; color: #777; }
+.message-actions button:hover,.message-actions button.active { background: #f0f0f0; color: #202020; }
+.message-actions button.active { color: var(--brand-dark); }
+.message-actions button svg { width: 14px; height: 14px; }
+.message-actions [role=tooltip] { position: absolute; left: 50%; bottom: calc(100% + 7px); z-index: 8; width: max-content; max-width: 150px; padding: 5px 7px; border-radius: 5px; background: #202020; color: white; font-size: 9px; font-weight: 600; line-height: 1.25; pointer-events: none; opacity: 0; transform: translate(-50%,3px); transition: opacity .15s ease,transform .15s ease; }
+.message-actions button:hover [role=tooltip],.message-actions button:focus-visible [role=tooltip] { opacity: 1; transform: translate(-50%,0); }
 .chat-notes { padding-top: 3px; color: #555; font-size: 12px; line-height: 1.6; }
 .chat-notes h1, .chat-notes h2, .chat-notes h3 { margin: 12px 0 5px; color: #202020; font-size: 12px; }
 .session-navigation { display: flex; align-items: center; gap: 9px; padding: 12px 0; border-bottom: 1px solid #e7e7e7; }
@@ -36,10 +45,13 @@
 .session-navigation strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .session-navigation > span { display: flex; align-items: center; gap: 5px; color: #177653; font-size: 9px; }
 .session-navigation i { width: 6px; height: 6px; border-radius: 50%; background: #26ad78; }
-.sessions-page { padding-top: 10px; }
-.sessions-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; padding: 20px 0; }
-.sessions-heading h1 { margin: 3px 0 5px; font-size: 24px; }
-.sessions-heading p:last-child { margin: 0; color: #777; font-size: 11px; }
+.sessions-page { gap: 0; padding-top: 8px; }
+.sessions-page .page-navigation { padding-bottom: 6px; border-bottom: 1px solid #ededed; }
+.sessions-page .page-navigation button { margin-left: -7px; padding: 0 7px; }
+.sessions-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0 15px; }
+.sessions-heading > div { min-width: 0; }
+.sessions-heading h1 { margin: 2px 0 4px; font-size: 22px; line-height: 1.12; }
+.sessions-heading p:last-child { max-width: 390px; margin: 0; color: #777; font-size: 10.5px; line-height: 1.45; }
 .new-session { display: flex; align-items: center; gap: 6px; padding: 9px 11px; border: 0; border-radius: 7px; background: #202020; color: #fff; font-size: 11px; font-weight: 800; }
 .session-list { border-top: 1px solid #e5e5e5; }
 .session-list > button { display: flex; width: 100%; align-items: center; gap: 10px; padding: 13px 7px; border: 0; border-bottom: 1px solid #e5e5e5; background: transparent; text-align: left; }
@@ -48,4 +60,9 @@
 .session-list strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .session-list small { color: #777; font-size: 9px; }
 .session-list em { color: #177653; font-size: 9px; font-style: normal; font-weight: 800; }
-.chat-shell main { animation: assistant-in .22s ease-out; }
+.chat-shell main { padding-bottom: 8px; animation: assistant-in .22s ease-out; }
+@media(max-width:380px) {
+  .sessions-heading { align-items: flex-start; gap: 9px; }
+  .new-session { padding: 8px; }
+  .new-session svg { width: 14px; height: 14px; }
+}

@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { BookOpen, ChevronDown, CircleHelp, FileText, Gavel, Handshake, Landmark, Lightbulb, LoaderCircle, LocateFixed, Puzzle, Send, Sparkles, X } from 'lucide-react';
+import { BookOpen, ChevronDown, CircleHelp, FileText, Gavel, Handshake, Landmark, Lightbulb, LoaderCircle, Puzzle, Send, Sparkles, X } from 'lucide-react';
 import type { LexheroAction } from '../../types';
 
 const tools: { value: LexheroAction; label: string; hint: string; icon: typeof Sparkles; dividerBefore?: boolean }[] = [
@@ -57,7 +57,7 @@ export function PromptComposer({
     <form className="prompt-box" onSubmit={onSubmit}>
       {contextText.trim() && <div className="prompt-context">
         <button className="context-jump" type="button" onClick={onRevealContext} aria-label="Mostra il testo selezionato nel documento" title="Mostra nel documento">
-          <LocateFixed aria-hidden="true" /><span><strong>Contesto</strong><em>{contextText}</em></span>
+          <span>{contextText}</span>
         </button>
         <button type="button" onClick={onClearContext} aria-label="Rimuovi il testo selezionato dal contesto" title="Rimuovi contesto"><X /></button>
       </div>}

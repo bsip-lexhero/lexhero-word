@@ -13,29 +13,20 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 8px;
-  padding: 5px 6px;
+  padding: 5px 7px;
   border-radius: 6px;
   text-align: left;
 }
 .prompt-context .context-jump:hover { background: #f3f3f3; }
-.prompt-context .context-jump > svg { width: 15px; height: 15px; color: var(--brand-dark); }
 .prompt-context .context-jump > span {
   min-width: 0;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: baseline;
-  gap: 7px;
-}
-.prompt-context .context-jump strong { font-style: normal; }
-.prompt-context .context-jump em {
-  min-width: 0;
+  display: block;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #555;
+  color: #454545;
   font-size: 12px;
-  font-style: normal;
   font-weight: 400;
 }
 

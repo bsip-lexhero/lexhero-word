@@ -1,5 +1,5 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
-import { ChevronLeft, Clock3, FileSearch, History, LogOut, MessageSquareText, Plus, Sparkles } from 'lucide-react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { ChevronLeft, CircleUserRound, Clock3, FileSearch, History, LoaderCircle, LogOut, MessageSquareText, Plus, Sparkles } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import { api } from '../../services/api-client';
 import { supabase } from '../../services/supabase-client';
@@ -44,6 +44,9 @@ export function AssistantView({ user, word = wordDocumentService }: { user: User
   const [thinkingUpdates, setThinkingUpdates] = useState<string[]>([]);
   const [thinkingStartedAt, setThinkingStartedAt] = useState(0);
   const [thinkingSeconds, setThinkingSeconds] = useState(0);
+  const [analyzerMode, setAnalyzerMode] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
 
   const hasConversation = activeSession.messages.length > 0;
   const allSessions = useMemo(() => [activeSession, ...sessions.filter((item) => item.id !== activeSession.id)], [activeSession, sessions]);
@@ -107,6 +110,7 @@ export function AssistantView({ user, word = wordDocumentService }: { user: User
     setPrompt('');
     setError('');
     setShowSessions(false);
+    setAnalyzerMode(false);
   }
 
   function openSession(session: ChatSession) {
@@ -127,6 +131,22 @@ export function AssistantView({ user, word = wordDocumentService }: { user: User
   }, [word]);
 
   useEffect(() => { void loadSessions(); }, []);
+
+  useEffect(() => {
+    if (!profileOpen) return;
+    const closeOutside = (event: PointerEvent) => {
+      if (!profileRef.current?.contains(event.target as Node)) setProfileOpen(false);
+    };
+    const closeWithEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setProfileOpen(false);
+    };
+    document.addEventListener('pointerdown', closeOutside);
+    document.addEventListener('keydown', closeWithEscape);
+    return () => {
+      document.removeEventListener('pointerdown', closeOutside);
+      document.removeEventListener('keydown', closeWithEscape);
+    };
+  }, [profileOpen]);
 
   useEffect(() => {
     if (!loading || !thinkingStartedAt) return;
@@ -183,6 +203,7 @@ export function AssistantView({ user, word = wordDocumentService }: { user: User
   }
 
   async function analyzeDocument() {
+    setAnalyzerMode(true);
     const requestText = 'Analizza il documento completo';
     const userMessage: ConversationMessage = { id: `user-${Date.now()}`, role: 'user', content: requestText };
     setActiveSession((session) => ({
@@ -223,12 +244,18 @@ export function AssistantView({ user, word = wordDocumentService }: { user: User
 
   return <div className="app-shell chat-shell">
     <header>
-      <img src="/assets/lexhero-wordmark.png" alt="Lexhero" />
+      <img src="/assets/icon.svg" alt="Lexhero" />
       <div className="header-actions">
-        <button className="header-analyzer" onClick={analyzeDocument} disabled={loading} aria-label="Analizza il documento completo" title="Analyzer: analizza il documento completo"><FileSearch /></button>
         <button onClick={startNewSession} aria-label="Nuova conversazione" title="Nuova conversazione"><Plus /></button>
-        <button className={showSessions ? 'active' : ''} onClick={() => setShowSessions(true)} aria-label="Conversazioni" title="Conversazioni"><History /></button>
-        <button onClick={() => supabase.auth.signOut()} aria-label={`Esci da ${user.email}`}><LogOut /></button>
+        <button className={`header-analyzer ${analyzerMode ? 'active' : ''}`} onClick={analyzeDocument} disabled={loading} aria-label={loading && analyzerMode ? 'Analisi del documento in corso' : 'Analizza il documento completo'} title="Analyzer: analizza il documento completo">{loading && analyzerMode ? <LoaderCircle className="spin" /> : <FileSearch />}</button>
+        <div className="profile-menu" ref={profileRef}>
+          <button className={profileOpen ? 'active' : ''} onClick={() => setProfileOpen((open) => !open)} aria-label="Apri menu profilo" aria-haspopup="menu" aria-expanded={profileOpen} title="Profilo"><CircleUserRound /></button>
+          {profileOpen && <div className="profile-dropdown" role="menu">
+            <div className="profile-identity"><CircleUserRound /><span><small>ACCOUNT</small><strong>{user.email}</strong></span></div>
+            <button role="menuitem" onClick={() => { setShowSessions(true); setProfileOpen(false); }}><History /><span>Cronologia</span></button>
+            <button className="logout" role="menuitem" onClick={() => supabase.auth.signOut()}><LogOut /><span>Esci</span></button>
+          </div>}
+        </div>
       </div>
     </header>
     {showSessions ? <main className="sessions-page">
@@ -247,18 +274,18 @@ export function AssistantView({ user, word = wordDocumentService }: { user: User
         {!hasConversation ? <div className="conversation-empty"><Sparkles /><p className="eyebrow">LEXHERO AI</p><h2>Come posso aiutarti?</h2><span>{selected ? 'Il testo selezionato è pronto. Chiedi una revisione, una riscrittura o un’analisi.' : 'Seleziona un testo in Word oppure inizia con un prompt libero.'}</span></div> :
           <div className="message-list">{activeSession.messages.map((message) => message.role === 'user'
             ? <div className="user-message" key={message.id}>{message.content}</div>
-            : <ResponsePanel key={message.id} response={message.response} word={word} />)}{loading && <ThinkingPanel updates={thinkingUpdates} seconds={thinkingSeconds} />}</div>}
+            : <ResponsePanel key={message.id} response={message.response} word={word} />)}{loading && <ThinkingPanel updates={thinkingUpdates} seconds={thinkingSeconds} analyzer={analyzerMode} />}</div>}
       </div>
-      <PromptComposer action={action} contextText={selected} loading={loading || selectionLoading} prompt={prompt} wholeDocument={whole} onActionChange={setAction} onClearContext={() => setSelected('')} onRevealContext={revealSelection} onPromptChange={setPrompt} onSubmit={submit} onWholeDocumentChange={setWhole} />
+      {!analyzerMode && <PromptComposer action={action} contextText={selected} loading={loading || selectionLoading} prompt={prompt} wholeDocument={whole} onActionChange={setAction} onClearContext={() => setSelected('')} onRevealContext={revealSelection} onPromptChange={setPrompt} onSubmit={submit} onWholeDocumentChange={setWhole} />}
     </main>}
   </div>;
 }
 
-function ThinkingPanel({ updates, seconds }: { updates: string[]; seconds: number }) {
+function ThinkingPanel({ updates, seconds, analyzer = false }: { updates: string[]; seconds: number; analyzer?: boolean }) {
   const index = Math.min(updates.length - 1, Math.floor(seconds / 38));
   const elapsed = seconds < 60 ? `${seconds} sec` : `${Math.floor(seconds / 60)} min ${String(seconds % 60).padStart(2, '0')} sec`;
   return <section className="thinking-panel" role="status" aria-live="polite">
-    <div className="thinking-head"><span className="thinking-mark"><Sparkles /></span><div><strong>Lexhero sta lavorando</strong><small>Il workflow può richiedere fino a 5 minuti</small></div><span className="thinking-time"><Clock3 /> {elapsed}</span></div>
+    <div className="thinking-head"><span className="thinking-mark">{analyzer ? <FileSearch /> : <Sparkles />}</span><div><strong>{analyzer ? 'Analisi del documento in corso' : 'Lexhero sta lavorando'}</strong><small>{analyzer ? 'Sto esaminando struttura, clausole e rischi' : 'Il workflow può richiedere fino a 5 minuti'}</small></div><span className="thinking-time"><Clock3 /> {elapsed}</span></div>
     <div className="thinking-progress" aria-hidden="true"><i /></div>
     <p key={index}>{updates[index] || 'Sto elaborando la richiesta'}</p>
     <small className="thinking-note">Puoi lasciare aperto il pannello: la risposta apparirà appena n8n avrà terminato.</small>
