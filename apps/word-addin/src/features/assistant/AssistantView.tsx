@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
-import { ChevronLeft, Clock3, FileCheck2, FileSearch, History, LogOut, MessageSquareText, Plus, Sparkles } from 'lucide-react';
+import { ChevronLeft, Clock3, FileSearch, History, LogOut, MessageSquareText, Plus, Sparkles } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import { api } from '../../services/api-client';
 import { supabase } from '../../services/supabase-client';
@@ -31,7 +31,6 @@ const titleFrom = (value: string) => value.trim().replace(/\s+/g, ' ').slice(0, 
 
 export function AssistantView({ user, word = wordDocumentService }: { user: User; word?: WordDocumentService }) {
   const [selected, setSelected] = useState('');
-  const [documentTitle, setDocumentTitle] = useState('Documento Word');
   const [action, setAction] = useState<LexheroAction>('chat');
   const [prompt, setPrompt] = useState('');
   const [whole, setWhole] = useState(false);
@@ -54,8 +53,6 @@ export function AssistantView({ user, word = wordDocumentService }: { user: User
     setError('');
     try {
       setSelected(await word.getSelectedText());
-      const meta = await word.getMetadata();
-      setDocumentTitle(meta.title || 'Documento Word');
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Impossibile leggere la selezione');
     } finally {
@@ -234,7 +231,6 @@ export function AssistantView({ user, word = wordDocumentService }: { user: User
         <button onClick={() => supabase.auth.signOut()} aria-label={`Esci da ${user.email}`}><LogOut /></button>
       </div>
     </header>
-    <div className="document-bar"><FileCheck2 /><div><small>DOCUMENTO ATTIVO</small><strong>{documentTitle}</strong></div><span>Connesso</span></div>
     {showSessions ? <main className="sessions-page">
       <div className="page-navigation"><button onClick={() => setShowSessions(false)}><ChevronLeft /> Chat</button></div>
       <div className="sessions-heading"><div><p className="eyebrow">QUESTO DOCUMENTO</p><h1>Conversazioni</h1><p>Continua una sessione o iniziane una nuova sul documento attivo.</p></div><button className="new-session" onClick={startNewSession}><Plus /> Nuova</button></div>

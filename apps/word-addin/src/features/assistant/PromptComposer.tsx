@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { BookOpen, ChevronDown, FileText, Gavel, Handshake, Landmark, Lightbulb, LoaderCircle, LocateFixed, Puzzle, Send, Sparkles, X } from 'lucide-react';
+import { BookOpen, ChevronDown, CircleHelp, FileText, Gavel, Handshake, Landmark, Lightbulb, LoaderCircle, LocateFixed, Puzzle, Send, Sparkles, X } from 'lucide-react';
 import type { LexheroAction } from '../../types';
 
 const tools: { value: LexheroAction; label: string; hint: string; icon: typeof Sparkles; dividerBefore?: boolean }[] = [
@@ -91,7 +91,13 @@ export function PromptComposer({
               </div>; })}
             </div>}
           </div>
-          <label className="whole-document"><span>Documento completo <em>TUTTO IL FILE</em></span><input type="checkbox" role="switch" aria-label="Usa il documento completo" checked={wholeDocument} onChange={(event) => onWholeDocumentChange(event.target.checked)} /><i aria-hidden="true" /></label>
+          <div className="fullpage-control">
+            <label className="whole-document"><span>Full page</span><input type="checkbox" role="switch" aria-label="Usa il documento completo" checked={wholeDocument} onChange={(event) => onWholeDocumentChange(event.target.checked)} /><i aria-hidden="true" /></label>
+            <span className="fullpage-help" tabIndex={0} aria-label="Oltre alla selezione, verrà inviato come contesto l’intero documento.">
+              <CircleHelp aria-hidden="true" />
+              <span role="tooltip">Oltre alla selezione, verrà inviato come contesto l’intero documento.</span>
+            </span>
+          </div>
         </div>
         <div className="prompt-actions">
           <button className="send-action" disabled={loading || !canSubmit} aria-label={loading ? 'Elaborazione' : 'Invia'} title="Invia">
@@ -100,6 +106,5 @@ export function PromptComposer({
         </div>
       </div>
     </form>
-    {wholeDocument && <p className="composer-note">Oltre alla selezione, verrà inviato come contesto l’intero documento.</p>}
   </div>;
 }
