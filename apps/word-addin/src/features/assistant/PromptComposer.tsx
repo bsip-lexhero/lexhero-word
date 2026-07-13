@@ -91,15 +91,15 @@ export function PromptComposer({
               </div>; })}
             </div>}
           </div>
+        </div>
+        <div className="prompt-actions">
           <div className="fullpage-control">
-            <label className="whole-document"><span>Full page</span><input type="checkbox" role="switch" aria-label="Usa il documento completo" checked={wholeDocument} onChange={(event) => onWholeDocumentChange(event.target.checked)} /><i aria-hidden="true" /></label>
+            <label className="whole-document"><span>Documento intero</span><input type="checkbox" role="switch" aria-label="Usa il documento intero" checked={wholeDocument} onChange={(event) => onWholeDocumentChange(event.target.checked)} /><i aria-hidden="true" /></label>
             <span className="fullpage-help" tabIndex={0} aria-label="Oltre alla selezione, verrà inviato come contesto l’intero documento.">
               <CircleHelp aria-hidden="true" />
               <span role="tooltip">Oltre alla selezione, verrà inviato come contesto l’intero documento.</span>
             </span>
           </div>
-        </div>
-        <div className="prompt-actions">
           <button className="send-action" disabled={loading || !canSubmit} aria-label={loading ? 'Elaborazione' : 'Invia'} title="Invia">
             {loading ? <LoaderCircle className="spin" /> : <Send />}
           </button>
