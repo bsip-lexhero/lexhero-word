@@ -1,0 +1,51 @@
+.message-list { display: flex; flex-direction: column; gap: 26px; }
+.user-message { align-self: flex-end; max-width: 84%; padding: 10px 13px; border-radius: 14px 14px 4px 14px; background: #202020; color: #fff; font-size: 13px; line-height: 1.5; white-space: pre-wrap; }
+.assistant-label { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #555; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.assistant-label svg { width: 13px; height: 13px; color: var(--brand); }
+.thinking-panel { border-left: 2px solid var(--brand); padding: 2px 0 2px 14px; color: #555; animation: thinking-in .24s ease-out; }
+.thinking-head { display: flex; align-items: center; gap: 9px; }
+.thinking-mark { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: rgba(233,61,130,.09); color: var(--brand-dark); animation: thinking-pulse 2.4s ease-in-out infinite; }
+.thinking-mark svg { width: 14px; height: 14px; }
+.thinking-head>div { min-width: 0; display: flex; flex: 1; flex-direction: column; gap: 2px; }
+.thinking-head strong { color: #252525; font-size: 12px; }
+.thinking-head small,.thinking-note { color: #858585; font-size: 9px; line-height: 1.45; }
+.thinking-time { display: flex; align-items: center; gap: 4px; white-space: nowrap; color: #777; font-size: 9px; font-variant-numeric: tabular-nums; }
+.thinking-time svg { width: 11px; height: 11px; }
+.thinking-progress { height: 2px; margin: 13px 0 10px; overflow: hidden; background: #ececec; }
+.thinking-progress i { display: block; width: 32%; height: 100%; background: var(--brand); animation: thinking-travel 2.1s ease-in-out infinite; }
+.thinking-panel p { margin: 0 0 5px; color: #4b4b4b; font-size: 11px; animation: thinking-copy .3s ease-out; }
+.thinking-note { display: block; }
+@keyframes thinking-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes thinking-pulse { 50% { transform: scale(1.06); background: rgba(233,61,130,.15); } }
+@keyframes thinking-travel { from { transform: translateX(-110%); } to { transform: translateX(330%); } }
+@keyframes thinking-copy { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+@media(prefers-reduced-motion:reduce) { .thinking-panel,.thinking-mark,.thinking-progress i,.thinking-panel p { animation: none; } }
+.document-proposal { margin: 14px 0; overflow: hidden; border: 1px solid #d9d9d9; border-radius: 10px; background: #fff; box-shadow: 0 5px 18px rgba(32, 32, 32, .06); }
+.proposal-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 12px; border-bottom: 1px solid #e7e7e7; background: #fafafa; }
+.proposal-heading div { display: flex; flex-direction: column; gap: 2px; }
+.proposal-heading strong { font-size: 12px; }
+.proposal-heading > span { padding: 4px 7px; border-radius: 999px; background: #eee; font-size: 9px; font-weight: 800; }
+.proposal-text { padding: 14px; font-family: Georgia, 'Times New Roman', serif; font-size: 13px; line-height: 1.65; }
+.proposal-actions { margin: 0; padding: 9px; border-top: 1px solid #ececec; background: #fafafa; }
+.chat-notes { padding-top: 3px; color: #555; font-size: 12px; line-height: 1.6; }
+.chat-notes h1, .chat-notes h2, .chat-notes h3 { margin: 12px 0 5px; color: #202020; font-size: 12px; }
+.session-navigation { display: flex; align-items: center; gap: 9px; padding: 12px 0; border-bottom: 1px solid #e7e7e7; }
+.session-navigation > button, .page-navigation button { display: flex; height: 30px; align-items: center; gap: 4px; border: 0; border-radius: 6px; background: transparent; color: #666; }
+.session-navigation div { display: flex; min-width: 0; flex: 1; flex-direction: column; }
+.session-navigation small { color: #888; font-size: 8px; font-weight: 800; letter-spacing: .12em; }
+.session-navigation strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.session-navigation > span { display: flex; align-items: center; gap: 5px; color: #177653; font-size: 9px; }
+.session-navigation i { width: 6px; height: 6px; border-radius: 50%; background: #26ad78; }
+.sessions-page { padding-top: 10px; }
+.sessions-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; padding: 20px 0; }
+.sessions-heading h1 { margin: 3px 0 5px; font-size: 24px; }
+.sessions-heading p:last-child { margin: 0; color: #777; font-size: 11px; }
+.new-session { display: flex; align-items: center; gap: 6px; padding: 9px 11px; border: 0; border-radius: 7px; background: #202020; color: #fff; font-size: 11px; font-weight: 800; }
+.session-list { border-top: 1px solid #e5e5e5; }
+.session-list > button { display: flex; width: 100%; align-items: center; gap: 10px; padding: 13px 7px; border: 0; border-bottom: 1px solid #e5e5e5; background: transparent; text-align: left; }
+.session-list > button:hover, .session-list > button.current { background: #f1f1f1; }
+.session-list > button > span { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 3px; }
+.session-list strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.session-list small { color: #777; font-size: 9px; }
+.session-list em { color: #177653; font-size: 9px; font-style: normal; font-weight: 800; }
+.chat-shell main { animation: assistant-in .22s ease-out; }

@@ -1,0 +1,2 @@
+import { describe,expect,it } from 'vitest'; import type { LexheroRequest } from '../types';
+describe('assistant submit contract',()=>{it('supports prompt-only webhook requests outside Word',()=>{const request:LexheroRequest={action:'chat',prompt:'Spiega la clausola',options:{includeWholeDocument:false}};expect(request.action).toBe('chat');expect(request.selectedText).toBeUndefined();expect(request.options?.includeWholeDocument).toBe(false)})});

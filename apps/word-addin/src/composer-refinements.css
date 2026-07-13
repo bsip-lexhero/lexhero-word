@@ -1,0 +1,56 @@
+.assistant-main { padding-bottom: 18px; }
+.prompt-dock { bottom: 0; padding-bottom: 8px; }
+.prompt-box { padding-bottom: 1px; }
+.prompt-box > textarea { min-height: 72px; }
+.prompt-toolbar { padding-bottom: 0; }
+
+.prompt-context { align-items: center; }
+.prompt-context .context-jump {
+  width: auto;
+  height: auto;
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 5px 6px;
+  border-radius: 6px;
+  text-align: left;
+}
+.prompt-context .context-jump:hover { background: #f3f3f3; }
+.prompt-context .context-jump > svg { width: 15px; height: 15px; color: var(--brand-dark); }
+.prompt-context .context-jump > span {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 7px;
+}
+.prompt-context .context-jump strong { font-style: normal; }
+.prompt-context .context-jump em {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #555;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.whole-document > span { display: flex; align-items: center; gap: 5px; }
+.whole-document > span em {
+  padding: 2px 4px;
+  border-radius: 3px;
+  background: #e7e7e7;
+  color: #777;
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: .07em;
+}
+
+@media (max-width: 380px) {
+  .whole-document > span { display: none; }
+}

@@ -1,0 +1,20 @@
+.header-actions .header-analyzer {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: #202020;
+  color: white;
+}
+
+.header-actions .header-analyzer:hover:not(:disabled) {
+  background: #3a3a3a;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.header-actions .header-analyzer svg {
+  width: 14px;
+  height: 14px;
+}
